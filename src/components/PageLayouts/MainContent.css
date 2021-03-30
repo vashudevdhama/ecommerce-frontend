@@ -6,23 +6,3 @@
     justify-content: space-evenly;
     align-content: flex-start;
 }
-.maincontent-container-item{
-    margin: 1%;
-    flex: 1 1 30%;
-    position: relative;
-    overflow: hidden;
-}
-.maincontent-container-item__image{
-    background-color: aqua;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.maincontent-container-item__image img{
-    width: 400px;
-    height: 250px;
-    object-fit: cover;
-}
-/* .maincontent-container-item__info{
-
-} */
