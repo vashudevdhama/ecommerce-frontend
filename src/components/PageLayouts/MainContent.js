@@ -4,15 +4,67 @@ import prod4 from '../../assets/prod4.jpg';
 import ProductCard from '../ProductCard/ProductCard';
 import "./MainContent.css";
 
+// TODO: Fetch product details from API
+let productsFetched = [
+    {
+        id: 1,
+        name: "Product One Name",
+        price: 20.00,
+        ratings: 4.9,
+        imgsrc: prod1
+    },
+    {
+        id: 2,
+        name: "Product Two Name",
+        price: 2000.00,
+        ratings: 4.9,
+        imgsrc: prod4
+    },
+    {
+        id: 3,
+        name: "Product Three Name",
+        price: 200000000.00,
+        ratings: 4.9,
+        imgsrc: prod1
+    },
+    {
+        id: 1,
+        name: "Product One Name",
+        price: 20.00,
+        ratings: 4.9,
+        imgsrc: prod1
+    },
+    {
+        id: 2,
+        name: "Product Two Name",
+        price: 2000.00,
+        ratings: 4.9,
+        imgsrc: prod4
+    },
+    {
+        id: 3,
+        name: "Product Three Name",
+        price: 200000000.00,
+        ratings: 4.9,
+        imgsrc: prod1
+    }
+];
+
+
 function MainContent(){
     return (
         <div className="maincontent-container">
-
-            <ProductCard imgsrc={prod1} title="Title" price="Rs. 0.0" ratings="4.9/5" />
-            <ProductCard imgsrc={prod4} title="Title" price="Rs. 0.0" ratings="4.3/5" />
-            <ProductCard imgsrc={prod1} title="Title" price="Rs. 0.0" ratings="4.5/5" />
-            <ProductCard imgsrc={prod1} title="Title" price="Rs. 0.0" ratings="4.9/5" />
-        
+            {productsFetched.map(
+                product => {
+                    return <ProductCard 
+                                imgsrc={product.imgsrc} 
+                                title={product.name} 
+                                price={product.price} 
+                                ratings={product.ratings} 
+                            />
+                    }
+                )
+            }
         </div>
     )
 }
