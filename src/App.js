@@ -1,4 +1,5 @@
 import React from 'react';
+import Navbar from './components/Navbar/Navbar';
 import Products from './components/Products/Products';
 
 function App(){
@@ -11,6 +12,7 @@ function App(){
 
     return (
         <div>
+            <Navbar />
             <Products products={products} />
         </div>
     )
