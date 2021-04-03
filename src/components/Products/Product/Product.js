@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 
 export default function Product({ product }) {
     const classes = useStyles();
-    let description = product.description;
+
     return (
         <Card className={classes.root}>
             <CardActionArea>

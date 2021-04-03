@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Products({ products }){
     const classes = useStyles();
-    
+
     return (
         <main className={classes.content}>
             <Grid container spacing={4}>
