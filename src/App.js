@@ -1,14 +1,22 @@
 import React from 'react';
 import Navbar from './components/Navbar/Navbar';
 import Products from './components/Products/Products';
+import commerce from './lib/commerce';
 
 function App(){
 
-    const products = [
-        {id: 1, name: 'Product 1', desc: 'Description of the product 1', price: 199.99, image: 'https://raw.githubusercontent.com/vashudevdhama/images/master/JetFighting.png'},
-        {id: 2, name: 'Product 2', desc: 'Description of the product 2', price: 199.99, image: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg'}
-    ]
+    const [products, setProducts] = React.useState([]);
+
+    const fetchProducts = async () => {
+        const { data } = await commerce.products.list();
+        console.log(data);
+        setProducts(data);
+    }
     
+    React.useEffect(()=>{
+        fetchProducts();
+        console.log(products);
+    }, []);
 
     return (
         <div>

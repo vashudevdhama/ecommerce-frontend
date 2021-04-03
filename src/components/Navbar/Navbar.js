@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
   brandLogo: {
     marginRight: theme.spacing(2),
   },
+  offset: theme.mixins.toolbar,
   title: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
@@ -158,7 +159,7 @@ export default function PrimarySearchAppBar() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           {/* Brand Icon */}
           <IconButton edge="start" className={classes.brandLogo} color="inherit" aria-label="Visit Home Page">
@@ -219,6 +220,8 @@ export default function PrimarySearchAppBar() {
           </div>
         </Toolbar>
       </AppBar>
+      {/* <div className={classes.offset} /> */}
+      {/* <Toolbar /> */}
       {renderMobileMenu}
       {renderMenu}
     </div>

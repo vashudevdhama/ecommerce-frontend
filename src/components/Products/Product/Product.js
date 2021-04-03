@@ -15,13 +15,13 @@ const useStyles = makeStyles({
 
 export default function Product({ product }) {
     const classes = useStyles();
-
+    let description = product.description;
     return (
         <Card className={classes.root}>
             <CardActionArea>
             <CardMedia
                 className={classes.media}
-                image={product.image}
+                image={product.media.source}
                 title={product.name}
             />
                 <CardContent>
@@ -29,10 +29,9 @@ export default function Product({ product }) {
                         {product.name}
                     </Typography>
                     <Typography variant="h6" color="textSecondary" component="h2">
-                        Rs. {product.price}
+                        Rs. {product.price.formatted_with_symbol}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {product.desc}
+                    <Typography dangerouslySetInnerHTML={{__html: product.description}} variant="body2" color="textSecondary" component="p">
                     </Typography>
                 </CardContent>
             </CardActionArea>
