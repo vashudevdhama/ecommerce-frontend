@@ -6,6 +6,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { ShoppingCart } from '@material-ui/icons';
+import { Link, useLocation } from 'react-router-dom';
+import shopcomLogo from '../../assets/shopcom.png';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -13,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   brandLogo: {
     marginRight: theme.spacing(2),
+    marginLeft: '0px',
   },
   offset: theme.mixins.toolbar,
   title: {
@@ -70,10 +73,19 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  link: {
+    textDecoration: 'none',
+    color: 'inherit'
+  },
+  image: {
+    height: '40px',
+    marginRight: '0px',
+  }
 }));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar({ totalItems }) {
   const classes = useStyles();
+  const location = useLocation();
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -125,14 +137,14 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      {location.pathname === '/' && <MenuItem component={Link} to="/cart" >
         <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={1} color="secondary">
+          <Badge badgeContent={totalItems} color="secondary">
             <ShoppingCart />
           </Badge>
         </IconButton>
         <p>Cart</p>
-      </MenuItem>
+      </MenuItem>}
       { auth ? (<MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           aria-label="account of current user"
@@ -159,14 +171,14 @@ export default function PrimarySearchAppBar() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="sticky">
+      <AppBar position="fixed">
         <Toolbar>
           {/* Brand Icon */}
-          <IconButton edge="start" className={classes.brandLogo} color="inherit" aria-label="Visit Home Page">
-            <MenuIcon />
+          <IconButton edge="start" className={classes.brandLogo, classes.link} color="inherit" aria-label="Visit Home Page" component={Link} to="/">
+            <img src={shopcomLogo} className={classes.image} alt="shopcom" />
           </IconButton>
           {/* Brand Name */}
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={classes.title, classes.link} variant="h6" component={Link} to="/" noWrap>
             ShopCom
           </Typography>
           {/* Search Bar */}
@@ -184,12 +196,13 @@ export default function PrimarySearchAppBar() {
             />
           </div>
           <div className={classes.grow} />
+          {/* Right side responsive icons */}
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show cart items count" color="inherit">
-              <Badge badgeContent={1} color="secondary">
+            {location.pathname === '/' && <IconButton aria-label="cart" color="inherit" component={Link} to="/cart">
+              <Badge badgeContent={totalItems} color="secondary">
                 <ShoppingCart />
               </Badge>
-            </IconButton>
+            </IconButton>}
           {auth ? 
           <IconButton
               edge="end"
@@ -220,8 +233,10 @@ export default function PrimarySearchAppBar() {
           </div>
         </Toolbar>
       </AppBar>
-      {/* <div className={classes.offset} /> */}
-      {/* <Toolbar /> */}
+      {/* Below Toolbar added to overcome fixed placement causing content to be invisible behind the bar */}
+      {/* An alternate to this can be to remove below Toolbar and
+       add position="sticky" in above AppBar component (not supported by IE 11) */}
+      <Toolbar />
       {renderMobileMenu}
       {renderMenu}
     </div>

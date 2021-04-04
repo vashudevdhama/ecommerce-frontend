@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-function Products({ products }){
+function Products({ products, addToCart }){
     const classes = useStyles();
 
     return (
@@ -19,7 +19,7 @@ function Products({ products }){
             <Grid container spacing={4}>
                 {products.map(product => (
                     <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
-                        <Product product={product} />
+                        <Product product={product} addToCart={addToCart} />
                     </Grid>
                 ))}
             </Grid>

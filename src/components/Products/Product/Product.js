@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     },
   });
 
-export default function Product({ product }) {
+export default function Product({ product, addToCart }) {
     const classes = useStyles();
 
     return (
@@ -36,7 +36,7 @@ export default function Product({ product }) {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <IconButton aria-label="Add to Cart">
+                <IconButton aria-label="Add to Cart" onClick={() => addToCart(product.id, 1)}>
                     <AddShoppingCart />
                 </IconButton>
             </CardActions>
