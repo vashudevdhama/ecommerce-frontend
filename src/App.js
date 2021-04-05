@@ -7,6 +7,7 @@ import commerce from './lib/commerce';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import Checkout from './components/Checkout/Checkout';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -94,7 +95,7 @@ function App(){
                         <Cart cart={cart} updateCartItemQty={updateCartItemQty} removeItemFromCart={removeItemFromCart} emptyCart={emptyCart} />
                     </Route>
                     <Route exact path="/checkout">
-                        Checkout Page
+                        <Checkout />
                     </Route>
                 </Switch>
             </div>

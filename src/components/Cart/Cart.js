@@ -55,8 +55,8 @@ function Cart({ cart, updateCartItemQty, removeItemFromCart, emptyCart }){
             <div className={classes.cardDetails}>
                 <Typography variant="h5" component="h2">Total: {cart.subtotal.formatted_with_symbol}</Typography>
                 <div>
-                    <Button className={classes.checkoutButton} variant="outlined" color="secondary" component={Link} to="/checkout">Checkout</Button>
-                    <Button className={classes.emptyButton} variant="outlined" color="primary" onClick={()=>emptyCart()}>Empty Cart</Button>
+                    <Button className={classes.emptyButton} variant="outlined" color="secondary" onClick={()=>emptyCart()}>Empty Cart</Button>
+                    <Button className={classes.checkoutButton} variant="contained" type="button" color="primary" component={Link} to="/checkout">Checkout</Button>
                 </div>
             </div>
             <div className={classes.content}>
