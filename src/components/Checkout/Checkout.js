@@ -49,7 +49,9 @@ function Checkout({ cart }){
         nextStep();
     }
 
-    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} processNext={processNext}/> : <PaymentForm addressData={addressData}/>
+    const Form = () => activeStep === 0 ? 
+                        <AddressForm checkoutToken={checkoutToken} processNext={processNext}/> : 
+                        <PaymentForm checkoutToken={checkoutToken} addressData={addressData}/>
 
     return (
         <main>
