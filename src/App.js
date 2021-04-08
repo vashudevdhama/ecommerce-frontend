@@ -95,7 +95,7 @@ function App(){
                         <Cart cart={cart} updateCartItemQty={updateCartItemQty} removeItemFromCart={removeItemFromCart} emptyCart={emptyCart} />
                     </Route>
                     <Route exact path="/checkout">
-                        <Checkout />
+                        <Checkout cart={cart} />
                     </Route>
                 </Switch>
             </div>

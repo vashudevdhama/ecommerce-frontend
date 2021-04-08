@@ -1,103 +1,73 @@
 import React from 'react';
-import { Typography, Paper, Stepper, Step, StepLabel, StepContent,Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Paper, Typography, Stepper, Step, StepLabel, CircularProgress, Divider, Button } from '@material-ui/core';
+import AddressForm from './AddressForm';
+import PaymentForm from './PaymentForm';
+import ConfirmationPage from './ConfirmationPage';
+import { makeStyles } from '@material-ui/core';
+import commerce from '../../lib/commerce';
 
-const useStyles = makeStyles({
-    container:{
-        marginTop: '2%',
-        marginLeft: '5%',
-        marginRight: '5%'
+const useStyles = makeStyles((theme) => ({
+    stepper: {
+        maxWidth: 650,
+        marginLeft: 'auto',
+        marginRight: 'auto',
     },
-})
+}))
 
-const steps = ['Shipping address', 'Payment'];
+const steps = ['Shipping Address', 'Payment details'];
 
-function Checkout(){
+function Checkout({ cart }){
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
+    const [checkoutToken, setCheckoutToken] = React.useState(null);
+    const [addressData, setAddressData] = React.useState({});
 
-    // TODO: Make address form
-    const ShippingAddress = (
-        <h1>Shipping Address</h1>
-    )
-    // TODO: Make payment form
-    const PaymentForm = (
-        <h1>Payment form</h1>
-    )
-    // TODO: Confirmation page
-    const ConfirmationPage = (
-        <h1>Confirmation Page</h1>
-    )
-
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      };
-    
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-      };
-
-    function getStepContent(step) {
-        switch (step) {
-          case 0:
-            return ShippingAddress;
-          case 1:
-            return PaymentForm;
-          case 2:
-            return ConfirmationPage;
-          default:
-            return 'Some Error Occurred';
+    React.useEffect(() => {
+        //Generate Token function needed to have async await in useEffect
+        const generateToken = async () => {
+            try{
+                const token = await commerce.checkout.generateToken(cart.id, { type: 'cart'});
+                setCheckoutToken(token);
+            } catch(error){
+                console.log(error);
+            }
         }
-      }
+
+        generateToken();
+    }, [cart])
+
+    function nextStep(){
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+    function backStep(){
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }
+
+    function processNext(data){
+        console.log(data);
+        setAddressData(data);
+        nextStep();
+    }
+
+    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} processNext={processNext}/> : <PaymentForm addressData={addressData}/>
 
     return (
-        <main class={classes.container}>
-            <Paper >
-                <Typography variant="h4" container="h2" gutterBottom>Checkout</Typography>
+        <main>
+            <Paper>
 
-                <Stepper activeStep={activeStep} orientation="vertical">
+                <Typography variant="h4" align="center" >Checkout</Typography>
+
+                <Stepper activeStep={activeStep} className={classes.stepper}>
                     {steps.map(step=>(
                         <Step key={step}>
-                            {/* Step Heading */}
-                            <StepLabel>
-                                {step}
-                            </StepLabel>
-                            {/* Step Content */}
-                            <StepContent>
-                                <Typography >{getStepContent(activeStep)}</Typography>
-                                <div>
-                                    <div>
-                                    <Button
-                                        disabled={step === 0}
-                                        onClick={handleBack}
-                                    >
-                                        Back
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={handleNext}
-                                    >
-                                        {step === steps.length - 1 ? "Finish" : "Next"}
-                                    </Button>
-                                    </div>
-                                </div>
-                            </StepContent>
+                            <StepLabel>{step}</StepLabel>
                         </Step>
                     ))}
                 </Stepper>
-                {activeStep === steps.length && (
-                    <Paper square elevation={0}>
-                    <Typography>{getStepContent(activeStep)}</Typography>
-                    <Button 
-                        variant="contained"
-                        color="primary"
-                    // onClick={handleReset}
-                    >
-                        Confirm
-                    </Button>
-                    </Paper>
-                )}
+
+                {/* Form should be render only with valid active step count and checkoutToken */}
+                {activeStep === steps.length ? <ConfirmationPage /> : checkoutToken && <Form /> }
+
             </Paper>
         </main>
     )
