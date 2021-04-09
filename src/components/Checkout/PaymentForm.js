@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, List, ListItem, ListItemText, Button, Divider } from '@material-ui/core';
+import { Typography, List, ListItem, ListItemText, Button, Divider, CssBaseline } from '@material-ui/core';
 import { loadStripe } from '@stripe/stripe-js';
 import { makeStyles } from '@material-ui/core';
 import { CardElement, Elements, ElementsConsumer } from '@stripe/react-stripe-js';
@@ -58,7 +58,8 @@ function PaymentForm({ checkoutToken, backStep, addressData, processCaptureCheck
             const orderData = {
                 line_items: checkoutToken.live.line_items,
                 customer: {
-                    name: addressData.firstName, 
+                    firstname: addressData.firstname, 
+                    lastname: addressData.lastname,
                     email: addressData.email,
                     phone: addressData.phone
                 },
@@ -88,28 +89,30 @@ function PaymentForm({ checkoutToken, backStep, addressData, processCaptureCheck
     }
 
     return (
-        <main className={classes.layout}>
-            <Review checkoutToken={checkoutToken}/>
-            <Divider />
-            <Typography variant="h6" gutterBottom style={{margin: "20px 0px"}}>Payment method</Typography>
-            <Elements stripe={stripePromise}>
-                <ElementsConsumer>
-                    {({elements, stripe})=>(
-                        <form onSubmit={(e)=>handleSubmit(e, elements, stripe)}>
-                            <CardElement />
-                            <br/>
-                            <br />
-                            <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                                <Button variant="outlined" onClick={backStep}>Back</Button>
-                                <Button type="submit" variant="contained" color="primary" disables={!stripe}>
-                                    Pay {checkoutToken.live.subtotal.formatted_with_symbol}
-                                </Button>
-                            </div>
-                        </form>
-                    )}
-                </ElementsConsumer>
-            </Elements>
-        </main>
+        <>
+            <main className={classes.layout}>
+                <Review checkoutToken={checkoutToken}/>
+                <Divider />
+                <Typography variant="h6" gutterBottom style={{margin: "20px 0px"}}>Payment method</Typography>
+                <Elements stripe={stripePromise}>
+                    <ElementsConsumer>
+                        {({elements, stripe})=>(
+                            <form onSubmit={(e)=>handleSubmit(e, elements, stripe)}>
+                                <CardElement />
+                                <br/>
+                                <br />
+                                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                    <Button variant="outlined" onClick={backStep}>Back</Button>
+                                    <Button type="submit" variant="contained" color="primary" disables={!stripe}>
+                                        Pay {checkoutToken.live.subtotal.formatted_with_symbol}
+                                    </Button>
+                                </div>
+                            </form>
+                        )}
+                    </ElementsConsumer>
+                </Elements>
+            </main>
+        </>
     )
 }
 

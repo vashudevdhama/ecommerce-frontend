@@ -32,6 +32,8 @@ function App(){
     const [cart, setCart] = React.useState({});
     const [order, setOrder] = React.useState({});
 
+    const [errMsg, setErrMsg] = React.useState('');
+
     const fetchProducts = async () => {
         const { data } = await commerce.products.list();
         setProducts(data);
@@ -84,6 +86,7 @@ function App(){
             refreshCart();
         } catch (error) {
             console.log(error);
+            setErrMsg(error.data.error.message);
         }
     }
 
@@ -107,7 +110,7 @@ function App(){
                         <Cart cart={cart} updateCartItemQty={updateCartItemQty} removeItemFromCart={removeItemFromCart} emptyCart={emptyCart} />
                     </Route>
                     <Route exact path="/checkout">
-                        <Checkout cart={cart} order={order} processCaptureCheckout={processCaptureCheckout}/>
+                        <Checkout cart={cart} order={order} processCaptureCheckout={processCaptureCheckout} errMsg={errMsg}/>
                     </Route>
                 </Switch>
             </div>

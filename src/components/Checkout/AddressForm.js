@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography, TextField, InputLabel, Select, MenuItem, Button } from '@material-ui/core';
+import { Grid, Typography, TextField, InputLabel, Select, MenuItem, Button, CssBaseline } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useForm, FormProvider, useFormContext, Controller } from 'react-hook-form';
@@ -12,8 +12,6 @@ const useStyles = makeStyles((theme) => ({
     layout: {
         marginTop: '5%',
         width: 'auto',
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
         [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
             width: 600,
             marginLeft: 'auto',
@@ -89,6 +87,7 @@ function AddressForm({ checkoutToken, processNext }) {
             <Grid item xs={12} sm={6}>
                 <Controller 
                     control={control} 
+                    defaultValue=""
                     name={name}
                     render={({ field }) => <TextField {...field} fullWidth label={label} required />}
                 />
@@ -152,29 +151,30 @@ function AddressForm({ checkoutToken, processNext }) {
     }
 
     return (
-        <main className={classes.layout}>
-            <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit((data) => processNext({ ...data, shippingCountry, shippingState, shippingOption}))}>
-                    <Grid container spacing={3}>
-                        <CustomTextField name="fullname" label="Full Name" />
-                        <CustomTextField name="email" label="Email" />
-                        <CustomTextField name="phone" label="Phone No." />
-                        <CustomTextField name="address1" label="Address1" />
-                        <CustomTextField name="city" label="City" />
-                        <CustomTextField name="pincode" label="Pin code / ZIP" />
-                        <SelectShippingCountry />
-                        <SelectShippingSubDivision />
-                        <SelectShippingOption />
+        <>
+                <FormProvider {...methods}>
+                    <form onSubmit={methods.handleSubmit((data) => processNext({ ...data, shippingCountry, shippingState, shippingOption}))}>
+                        <Grid container spacing={3}>
+                            <CustomTextField name="firstname" label="First Name" />
+                            <CustomTextField name="lastname" label="Last Name" />
+                            <CustomTextField name="email" label="Email" />
+                            <CustomTextField name="phone" label="Phone No." />
+                            <CustomTextField name="address1" label="Address1" />
+                            <CustomTextField name="city" label="City" />
+                            <CustomTextField name="pincode" label="Pin code / ZIP" />
+                            <SelectShippingCountry />
+                            <SelectShippingSubDivision />
+                            <SelectShippingOption />
 
-                    </Grid>
-                    <br/>
-                    <div className={classes.buttons}>
-                        <Button component={Link} to="/cart" variant="outlined" color="secondary">Back to Cart</Button>
-                        <Button type="submit" variant="contained" color="primary">Next</Button>
-                    </div>
-                </form>
-            </FormProvider>
-        </main>
+                        </Grid>
+                        <br/>
+                        <div className={classes.buttons}>
+                            <Button component={Link} to="/cart" variant="outlined" color="secondary">Back to Cart</Button>
+                            <Button type="submit" variant="contained" color="primary">Next</Button>
+                        </div>
+                    </form>
+                </FormProvider>
+        </>
     )
 }
 
