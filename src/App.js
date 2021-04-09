@@ -30,6 +30,7 @@ function App(){
     // Product and Cart
     const [products, setProducts] = React.useState([]);
     const [cart, setCart] = React.useState({});
+    const [order, setOrder] = React.useState({});
 
     const fetchProducts = async () => {
         const { data } = await commerce.products.list();
@@ -71,8 +72,19 @@ function App(){
         handleBackDropClose();
     }
     
-    const processCheckout = async () => {
+    const refreshCart = async() =>{
+        const newCart = await commerce.cart.refresh();
+        setCart(newCart);
+    }
 
+    const processCaptureCheckout = async (checkoutTokenId, newOrder) => {
+        try {
+            const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
+            setOrder(incomingOrder);
+            refreshCart();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     React.useEffect(()=>{
@@ -95,7 +107,7 @@ function App(){
                         <Cart cart={cart} updateCartItemQty={updateCartItemQty} removeItemFromCart={removeItemFromCart} emptyCart={emptyCart} />
                     </Route>
                     <Route exact path="/checkout">
-                        <Checkout cart={cart} />
+                        <Checkout cart={cart} order={order} processCaptureCheckout={processCaptureCheckout}/>
                     </Route>
                 </Switch>
             </div>

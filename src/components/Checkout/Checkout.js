@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['Shipping Address', 'Payment details'];
 
-function Checkout({ cart }){
+function Checkout({ cart, order, processCaptureCheckout }){
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [checkoutToken, setCheckoutToken] = React.useState(null);
@@ -44,14 +44,19 @@ function Checkout({ cart }){
     }
 
     function processNext(data){
-        console.log(data);
         setAddressData(data);
         nextStep();
     }
 
     const Form = () => activeStep === 0 ? 
                         <AddressForm checkoutToken={checkoutToken} processNext={processNext}/> : 
-                        <PaymentForm checkoutToken={checkoutToken} addressData={addressData}/>
+                        <PaymentForm 
+                            checkoutToken={checkoutToken} 
+                            addressData={addressData} 
+                            backStep={backStep} 
+                            processCaptureCheckout={processCaptureCheckout}
+                            nextStep={nextStep}
+                        />
 
     return (
         <main>
@@ -68,7 +73,7 @@ function Checkout({ cart }){
                 </Stepper>
 
                 {/* Form should be render only with valid active step count and checkoutToken */}
-                {activeStep === steps.length ? <ConfirmationPage /> : checkoutToken && <Form /> }
+                {activeStep === steps.length ? <ConfirmationPage order={order}/> : checkoutToken && <Form /> }
 
             </Paper>
         </main>

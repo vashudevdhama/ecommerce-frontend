@@ -49,6 +49,8 @@ function AddressForm({ checkoutToken, processNext }) {
     const [shippingCountry, setShippingCountry] = React.useState('');
     const [shippingStates, setShippingStates] = React.useState([]);
     const [shippingState, setShippingState] = React.useState('');
+    const [shippingOptions, setShippingOptions] = React.useState([]);
+    const [shippingOption, setShippingOption] = React.useState('');
 
     async function fetchShippingCountries(checkoutTokenId){
         const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenId);
@@ -62,12 +64,22 @@ function AddressForm({ checkoutToken, processNext }) {
         setShippingState(Object.keys(subdivisions)[0]);
     }
 
+    async function fetchShippingOptions(checkoutTokenId, country, region=null){
+        const options = await commerce.checkout.getShippingOptions(checkoutTokenId, {country, region});
+        setShippingOptions(options);
+        setShippingOption(options[0].id);
+    }
+
     React.useEffect(()=>{
         fetchShippingCountries(checkoutToken.id);
     },[])
 
     React.useEffect(()=>{
         if(shippingCountry) fetchSubdivisions(checkoutToken.id, shippingCountry);
+    },[shippingCountry])
+
+    React.useEffect(()=>{
+        if(shippingCountry) fetchShippingOptions(checkoutToken.id, shippingCountry);
     },[shippingCountry])
 
 
@@ -101,6 +113,7 @@ function AddressForm({ checkoutToken, processNext }) {
                 </Grid>
         )
     }
+
     const SelectShippingSubDivision = () => {
         // Convert Object of state objects(i.e. shippingStates) to array of state objects(i.e. states).
         const states = Object.entries(shippingStates).map(([stateCode, stateName]) => ({id: stateCode, label: stateName}));
@@ -119,11 +132,29 @@ function AddressForm({ checkoutToken, processNext }) {
         )
     }
 
+    const SelectShippingOption = () => {
+        const options = shippingOptions.map((sOpt) => (
+            {id: sOpt.id, label: `${sOpt.description} - (${sOpt.price.formatted_with_symbol})`}
+            ));
+            
+            return (
+                <Grid item xs={12} sm={6}>
+                    <InputLabel>Shipping Option</InputLabel>
+                    <Select value={shippingOption} fullWidth onChange={(e)=> setShippingOption(e.target.value)}>
+                        {options.map(option => (
+                                <MenuItem key={option.id} value={option.id}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                    </Select>
+                </Grid>
+            )
+    }
 
     return (
         <main className={classes.layout}>
             <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit((data) => processNext({ ...data, shippingCountry, shippingState}))}>
+                <form onSubmit={methods.handleSubmit((data) => processNext({ ...data, shippingCountry, shippingState, shippingOption}))}>
                     <Grid container spacing={3}>
                         <CustomTextField name="fullname" label="Full Name" />
                         <CustomTextField name="email" label="Email" />
@@ -133,6 +164,8 @@ function AddressForm({ checkoutToken, processNext }) {
                         <CustomTextField name="pincode" label="Pin code / ZIP" />
                         <SelectShippingCountry />
                         <SelectShippingSubDivision />
+                        <SelectShippingOption />
+
                     </Grid>
                     <br/>
                     <div className={classes.buttons}>
