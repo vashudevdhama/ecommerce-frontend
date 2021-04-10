@@ -8,6 +8,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Checkout from './components/Checkout/Checkout';
+import CategoryBar from './components/CategoryBar/CategoryBar';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -29,14 +30,36 @@ function App(){
 
     // Product and Cart
     const [products, setProducts] = React.useState([]);
+    const [categories, setCategories] = React.useState([]);
+    const [category, setCategory] = React.useState('');
     const [cart, setCart] = React.useState({});
     const [order, setOrder] = React.useState({});
 
     const [errMsg, setErrMsg] = React.useState('');
 
-    const fetchProducts = async () => {
-        const { data } = await commerce.products.list();
-        setProducts(data);
+    const fetchProducts = async (category=null) => {
+        handleBackDropToggle();
+        let { data } = await commerce.products.list();
+        
+        // Category wise filtering
+        if(category){
+            const arrayOfProducts = data.map((product)=> {
+                const cat = product.categories.map(category=> category.slug)
+                return [product, cat];
+            })
+            const filteredProducts =  arrayOfProducts.filter(p=>{
+                if(p[1].includes(category)) return p;
+            })
+            setProducts(filteredProducts);
+        } else{
+            setProducts(data);
+        }
+        handleBackDropClose();
+    }
+
+    const fetchCategories = async() => {
+        const {data} = await commerce.categories.list();
+        setCategories(data);
     }
 
     const fetchCart = async () => {
@@ -91,14 +114,18 @@ function App(){
     }
 
     React.useEffect(()=>{
-        fetchProducts();
+        fetchCategories();
+        fetchProducts(category);
+    }, [category]);
+    React.useEffect(()=>{
         fetchCart();
-    }, []);
+    }, [])
 
     return (
         <BrowserRouter>
             <div>
-                <Navbar totalItems={cart.total_items} />
+                <Navbar totalItems={cart.total_items} setCategory={setCategory}/>
+                <CategoryBar categories={categories} setCategory={setCategory}/>
                 <Backdrop className={classes.backdrop} open={open}>
                     <CircularProgress color="inherit" />
                 </Backdrop>

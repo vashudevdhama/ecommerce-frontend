@@ -1,7 +1,6 @@
 import React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, Button } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -22,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
+      textDecoration: 'none',
+      color: 'inherit'
     },
   },
   search: {
@@ -73,17 +74,13 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  link: {
-    textDecoration: 'none',
-    color: 'inherit'
-  },
   image: {
     height: '40px',
     marginRight: '0px',
   }
 }));
 
-export default function PrimarySearchAppBar({ totalItems }) {
+export default function PrimarySearchAppBar({ totalItems, setCategory }) {
   const classes = useStyles();
   const location = useLocation();
   const [auth, setAuth] = React.useState(true);
@@ -137,7 +134,7 @@ export default function PrimarySearchAppBar({ totalItems }) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      {location.pathname === '/' && <MenuItem component={Link} to="/cart" >
+      {(location.pathname !== '/cart' && location.pathname !== '/checkout') && <MenuItem component={Link} to="/cart" >
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={totalItems} color="secondary">
             <ShoppingCart />
@@ -174,11 +171,11 @@ export default function PrimarySearchAppBar({ totalItems }) {
       <AppBar position="fixed">
         <Toolbar>
           {/* Brand Icon */}
-          <IconButton edge="start" className={classes.brandLogo, classes.link} color="inherit" aria-label="Visit Home Page" component={Link} to="/">
+          <IconButton onClick={()=>setCategory('')} edge="start" className={classes.brandLogo, classes.link} color="inherit" aria-label="Visit Home Page" component={Link} to="/">
             <img src={shopcomLogo} className={classes.image} alt="shopcom" />
           </IconButton>
           {/* Brand Name */}
-          <Typography className={classes.title, classes.link} variant="h6" component={Link} to="/" noWrap>
+          <Typography onClick={()=>setCategory('')} className={classes.title} variant="h6" component={Link} to="/" noWrap>
             ShopCom
           </Typography>
           {/* Search Bar */}
