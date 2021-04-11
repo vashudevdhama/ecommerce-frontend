@@ -1,3 +1,5 @@
+## Demo: [shopcomm.netlify.app](https://shopcomm.netlify.app/)
+
 ## Steps to test and/or build the project on your local machine.
 
 Clone this repo on your local machine. Then open command prompt and change directory to project directory (where you've cloned this repo).
