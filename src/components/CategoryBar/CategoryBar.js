@@ -1,6 +1,7 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme)=>({
     catbar: {
@@ -25,6 +26,7 @@ function CategoryBar({ categories, setCategory }){
                                             style={{color: 'white'}} 
                                             variant="text"
                                             onClick={() => setCategory(category.slug)}
+                                            component={Link} to="/"
                                         >
                                             {category.name}
                                         </Button>)}

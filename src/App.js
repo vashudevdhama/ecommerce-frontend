@@ -34,6 +34,7 @@ function App(){
     const [category, setCategory] = React.useState('');
     const [cart, setCart] = React.useState({});
     const [order, setOrder] = React.useState({});
+    const [searchText, setSearchText] = React.useState('');
 
     const [errMsg, setErrMsg] = React.useState('');
 
@@ -124,14 +125,14 @@ function App(){
     return (
         <BrowserRouter>
             <div>
-                <Navbar totalItems={cart.total_items} setCategory={setCategory}/>
+                <Navbar totalItems={cart.total_items} setSearchText={setSearchText} setCategory={setCategory}/>
                 <CategoryBar categories={categories} setCategory={setCategory}/>
                 <Backdrop className={classes.backdrop} open={open}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
                 <Switch>
                     <Route exact path="/">
-                        <Products products={products} addToCart={addToCart} />
+                        <Products products={products} searchText={searchText} addToCart={addToCart} />
                     </Route>
                     <Route exact path="/cart">
                         <Cart cart={cart} updateCartItemQty={updateCartItemQty} removeItemFromCart={removeItemFromCart} emptyCart={emptyCart} />

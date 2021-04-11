@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function PrimarySearchAppBar({ totalItems, setCategory }) {
+export default function PrimarySearchAppBar({ totalItems, setCategory, setSearchText }) {
   const classes = useStyles();
   const location = useLocation();
   const [auth, setAuth] = React.useState(true);
@@ -179,7 +179,7 @@ export default function PrimarySearchAppBar({ totalItems, setCategory }) {
             ShopCom
           </Typography>
           {/* Search Bar */}
-          <div className={classes.search}>
+          {location.pathname === '/' && <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -190,8 +190,9 @@ export default function PrimarySearchAppBar({ totalItems, setCategory }) {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={(event)=>{setSearchText(event.target.value)}}
             />
-          </div>
+          </div>}
           <div className={classes.grow} />
           {/* Right side responsive icons */}
           <div className={classes.sectionDesktop}>
