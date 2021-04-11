@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardMedia, Button, CardContent, Typography, CardActions, Paper, Grid } from '@material-ui/core';
+import { Button, Typography, Grid } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import CartItem from './CartItem/CartItem';

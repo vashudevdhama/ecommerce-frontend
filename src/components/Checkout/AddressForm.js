@@ -1,7 +1,5 @@
 import React from 'react';
-import { Grid, Typography, TextField, InputLabel, Select, MenuItem, Button, CssBaseline } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Backdrop from '@material-ui/core/Backdrop';
+import { Grid, TextField, InputLabel, Select, MenuItem, Button } from '@material-ui/core';
 import { useForm, FormProvider, useFormContext, Controller } from 'react-hook-form';
 import { makeStyles } from '@material-ui/core/styles';
 import commerce from '../../lib/commerce';
@@ -30,16 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AddressForm({ checkoutToken, processNext }) {
-    // Backdrop 
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const handleBackDropClose = () => {
-        setOpen(false);
-    };
-    const handleBackDropToggle = () => {
-        setOpen(!open);
-    };
-
 
     const methods = useForm();
 

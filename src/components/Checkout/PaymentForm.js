@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, List, ListItem, ListItemText, Button, Divider, CssBaseline } from '@material-ui/core';
+import { Typography, List, ListItem, ListItemText, Button, Divider } from '@material-ui/core';
 import { loadStripe } from '@stripe/stripe-js';
 import { makeStyles } from '@material-ui/core';
 import { CardElement, Elements, ElementsConsumer } from '@stripe/react-stripe-js';

@@ -18,7 +18,7 @@ function Products({ products, addToCart, searchText }){
         <main className={classes.content}>
             <Grid container spacing={4}>
                 {products.filter((product)=>{
-                    if(searchText == "") return product;
+                    if(searchText === "") return product;
                     else if(product[0] !== undefined && product[0].name.toLowerCase().includes(searchText.toLowerCase())){
                         return product;
                     }

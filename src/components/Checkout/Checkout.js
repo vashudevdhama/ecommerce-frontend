@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Typography, Stepper, Step, StepLabel, CircularProgress, Divider, Button, CssBaseline } from '@material-ui/core';
+import { Paper, Typography, Stepper, Step, StepLabel, CssBaseline } from '@material-ui/core';
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import ConfirmationPage from './ConfirmationPage';
